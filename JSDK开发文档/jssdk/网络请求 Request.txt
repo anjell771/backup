@@ -1,0 +1,805 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+    AppCan文档中心--appcan request native异步请求
+</title>
+<link rel="stylesheet" type="text/css" href="css/prettify.sons.css" charset="utf-8" />
+<script type="text/javascript" src="js/doc.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/prettify.js" charset="utf-8"></script>
+<style>
+body{font-family:"微软雅黑";}
+.padding{padding:54px 57px 0px 57px;}
+.tx-l{text-align:left;}
+.familyw{font-family:"微软雅黑";}
+.familyc{font-family:Consolas;}
+.size24{font-size:24px;}
+.size18{font-size:18px;}
+.size16{font-size:16px;}
+.size14{font-size:14px;}
+.size12{font-size:12px;}
+.colorgl{color:#7fc666;}/*绿色*/
+.colorgh{color:#dec063;}/*黄色*/
+.colory{color:#f06433;}
+.colorb{color:#000;}
+.colorg{color:#6b6c69;}
+.colorg2{color:#576266;}
+.colorz{color:#d22661;}
+.fon-w{font-weight:bold;}
+.line-h{line-height:28px;}
+.padding20{padding:20px 0 0 0;}
+.padding10{padding:10px 0 0 0;}
+.padding5{padding:5px 0 0 0;}
+.uinnp4{padding:4px 0px;display:block;}
+.bkg{background:#ffffff;}
+.bkgg{background:#302f2d;}
+.ubb2{border-bottom:2px solid;}
+.xt{font-style:italic;/*斜体*/}
+.ub-fh{width:100%;}
+.ufl{float:left !important;}
+.ufr{float:right !important;}
+.ubb{border-bottom:1px solid;}
+.t-bla{color:#000;}
+.clear{height:0;overflow:hidden;clear:both;}
+.ybor{border-radius:5px;}
+.c-79{color:#79da87;}
+.c-8b8{color:#8b8078;}
+.yuad{width: 5px; height: 5px; background: #5b5c5c; display:block; margin: 6px;}
+.t-wh{color:#fff;}
+    </style>
+<div>
+    <div class="uinn" style="width:100%;">
+        <!--uex标题-->
+        <div class="ub-fh" style="width:100%;">
+            <div class="familyc size24 ubb2 b-gra " style="font-weight:bold;line-height:45px;">
+                <span class="familyc size24" style="weight:bold;"> 网络请求 R<span class="familyc size24" style="weight:bold;">equest&nbsp;</span></span> 
+            </div>
+            <div class="familyw colorg size14 padding10">
+                对appcan私有的异步请求进行封装（即官方的uexXmlHttpMgr插件，打包时需要使用的到这个插件）并增加offline参数实现请求数据离线缓存功能
+            </div>
+        </div>
+<!--结束--> <br />
+<!--方法详情--> <a name="open"></a> 
+        <div class="fon-w size16 colory">
+            appcan.ajax(options)
+        </div>
+        <div class="padding5 size14">
+            &nbsp;&nbsp;发起一个ajax请求,并获取相应的内容
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options:发起ajax的请求的参数，这个必须是一个对象
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.type:请求的类型，包括GET、POST等
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.appVerify:是否在请求头中加入appVerify字段 true、false
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.url:要请求的地址
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.data:要请求的URL的参数,如果要上传文件则data数据中必须传一个对象包含一个path的key 例如：data:{file:{path:'a.jpeg'}}上传a.jpeg图片
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.contentType:默认: false 要传给服务端的数据内容的'content-Type'通过header,如果设置其他content将会直接把data发送出去
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.dataType:服务端的响应类型，包括json, jsonp, script, xml, html, text中的一种
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.timeout:请求的超时时间
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.headers:要设置的请求头
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.xhrFields:要重载的请求对象的字段
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.beforeSend(xhr, settings):请求发送之前的回调,返回false取消请求发送
+            </div>
+        </div>
+        <div class="tx-l size12 uinnp4">
+            <div>
+                &nbsp;&nbsp;options.success(data, status,,requestCode,response, xhr):请求发送成功后的回调
+            </div>
+<strong>说明：</strong><br />
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    <span style="color:#E53333;">&nbsp;&nbsp;requestCode</span>: 服务器响应状态码,成功为200，失败为404,-1等；
+                </div>
+                <div>
+                    &nbsp;&nbsp;<span style="color:#E53333;">reponse</span>: JSON格式字符串：<br />
+<pre class="prettyprint linenums">{
+"responseHeaders": “”,//请求头
+"responseStatusCode": “”,//状态码
+"responseStatusMessage": “”,//状态码的信息
+"responseError": “”//错误信息
+}
+</pre>
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.error(xhr, errorType, error,msg):请求如果出现错误后的回调;msg: 错误详细信息，服务器返回的result信息
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.complete(xhr, status):请求完成后的回调，不管是否出错
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.progress(progress, xhr):上传的进度，只有包含上传文件的时候才会执行该回调
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.certificate:添加证书信息 {password:'',path:''}其中password是证书的密码，path`是证书的地址
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.cache:是否缓存请求
+                </div>
+            </div>
+            <p>
+                <span style="line-height:1.5;">&nbsp; options.offline:是否直接调用离线数据，包括true,false,undefined</span> 
+            </p>
+<strong>offline参数说明：</strong><br />
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    <span style="color:#E53333;">&nbsp;&nbsp;true</span>: 直接调用缓存数据，如果缓存数据不存在，执行ajax请求并离线缓存返回数据；
+                </div>
+                <div>
+                    &nbsp;&nbsp;<span style="color:#E53333;">false</span>: 直接请求ajax数据，并把请求到的数据离线缓存；
+                </div>
+                <div>
+                    &nbsp;&nbsp;<span style="color:#E53333;">undefined</span>: 直接请求ajax数据，不缓存请求到的数据；
+                </div>
+            </div>
+            <p>
+                <span style="line-height:1.5;">&nbsp; options.offlineDataPath:自定义离线数据文件存储目录</span> 
+            </p>
+            <div class="tx-l size12 uinnp4">
+                <p>
+                    <span style="line-height:1.5;">&nbsp; options.expires:离线缓存过期时间，支持类型：</span> 
+                </p>
+                <p>
+                    &nbsp; &nbsp; <span style="color:#E53333;">1.number类型</span>（单位：毫秒），缓存过期时长，
+                </p>
+&nbsp; &nbsp; <span style="color:#E53333;">2.W3c IOS 8601 DateTime格式</span>,详见http://www.w3.org/TR/NOTE-datetime ，缓存过期时间点
+                <p>
+                    <br />
+                </p>
+            </div>
+            <div class="familyc colorb size16 fon-w padding20">
+                例如:
+            </div>
+<pre class="prettyprint linenums">appcan.ajax({
+url : 'http://weixin.appcan.cn:8086/test/get',
+type : 'GET',
+data : {
+a : 'hello word',
+b : 'page'
+},
+offline : true,
+offlineDataPath : 'wgt://aaa/',
+success : function(data) {
+alert(data);
+},
+error : function(e) {
+alert(e);
+}
+});
+</pre>
+            <div class="familyc colorb size16 fon-w padding20">
+                例如:
+            </div>
+<pre class="prettyprint linenums">A.number格式
+appcan.ajax({
+url : 'http://weixin.appcan.cn:8086/test/get',
+type : 'GET',
+data : {
+a : 'hello word',
+b : 'page'
+},
+offline : true,
+expires:3000
+success : function(data) {
+alert(data);
+},
+error : function(e) {
+alert(e);
+}
+});
+B.ISO 8601格式
+appcan.ajax({
+url : 'http://weixin.appcan.cn:8086/test/get',
+type : 'GET',
+data : {
+a : 'hello word',
+b : 'page'
+},
+offline : true,
+expires:'2015-05-16 ',
+success : function(data) {
+alert(data);
+},
+error : function(e) {
+alert(e);
+}
+});
+</pre>
+            <div class="familyc colorb size16 fon-w padding20">
+                例如:
+            </div>
+<pre class="prettyprint linenums">appcan.ajax({ 
+    url:http://115.29.138.150:8086/test/get,
+    type:"GET",
+    data:{},
+    datatype:"json", 
+    timeout:30000,
+    success:function(data,status,requestCode,response,xhr){
+        alert("status:"+status);
+        alert("result:"+data);
+        alert("requestCode:"+requestCode);
+        alert("response:"+JSON.stringify(response));
+        alert("xhr:"+JSON.stringify(xhr));
+    },
+    error:function(xhr,erroType,error,msg){
+        alert("erroType:"+erroType);
+        alert("error:"+error); 
+        alert("msg:"+msg);
+        alert("xhr:"+JSON.stringify(xhr));
+    }
+    
+});
+
+//获取appcan.cn页面
+appcan.ajax({
+    type : 'GET',
+    url : 'http://appcan.cn',
+    //添加参数
+    data : {
+        name : 'appcan'
+    },
+    //期望的返回类型
+    dataType : 'html',
+    timeout : 300, //超时时间
+    success : function(data) {
+        //获取内容
+        alert('data');
+    },
+    error : function(xhr, type) {
+        alert('Ajax error!')
+    },
+    offline : true
+})
+</pre>
+<!--示例代码结束--> <br />
+<!--方法详情--> <a name="open"></a> 
+            <div class="fon-w size16 colory">
+                appcan.request.ajax(options)
+            </div>
+            <div class="padding5 size14">
+                &nbsp;&nbsp;发起一个ajax请求,并获取相应的内容
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options:发起ajax的请求的参数，这个必须是一个对象
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.type:请求的类型，包括GET、POST等
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.appVerify:是否在请求头中加入appVerify字段 true、false
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.url:要请求的地址
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.data:要请求的URL的参数,如果要上传文件则data数据中必须传一个对象包含一个path的key 例如：data:{file:{path:'a.jpeg'}}上传a.jpeg图片
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.contentType:默认: false 要传给服务端的数据内容的'content-Type'通过header,如果设置其他content将会直接把data发送出去
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.dataType:服务端的响应类型，包括json, jsonp, script, xml, html, text中的一种
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.timeout:请求的超时时间
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.headers:要设置的请求头
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.xhrFields:要重载的请求对象的字段
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.beforeSend(xhr, settings):请求发送之前的回调,返回false取消请求发送
+                </div>
+            </div>
+            <div class="tx-l size12 uinnp4">
+                <div>
+                    &nbsp;&nbsp;options.success(data, status,requestCode,response, xhr):请求发送成功后的回调
+                </div>
+<strong>说明：</strong><br />
+                <div class="tx-l size12 uinnp4">
+                    <div>
+                        <span style="color:#E53333;">&nbsp;&nbsp;requestCode</span>: 服务器响应状态码,成功为200，失败为404,-1等；
+                    </div>
+                    <div>
+                        &nbsp;&nbsp;<span style="color:#E53333;">reponse</span>: JSON格式字符串：<br />
+<pre class="prettyprint linenums">{
+"responseHeaders": “”,//请求头
+"responseStatusCode": “”,//状态码
+"responseStatusMessage": “”,//状态码的信息
+"responseError": “”//错误信息
+}
+</pre>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;options.error(xhr, errorType, error,msg):请求如果出现错误后的回调;msg: 错误详细信息，服务器返回的result信息
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;options.complete(xhr, status):请求完成后的回调，不管是否出错
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;options.progress(progress, xhr):上传的进度，只有包含上传文件的时候才会执行该回调
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;options.certificate:添加证书信息 {password:'',path:''}其中password是证书的密码，path`是证书的地址
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;options.cache:是否缓存请求
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;options.offline:是否直接调用离线数据，包括true,false,undefined
+                        </div>
+<strong>offline参数说明：</strong><br />
+                        <div class="tx-l size12 uinnp4">
+                            <div>
+                                &nbsp;&nbsp;<span style="color:#E53333;">true</span>: 直接调用缓存数据，如果缓存数据不存在，执行ajax请求并离线缓存返回数据；
+                            </div>
+                            <div>
+                                &nbsp;&nbsp;<span style="color:#E53333;">false</span>: 直接请求ajax数据，并把请求到的数据离线缓存；
+                            </div>
+                            <div>
+                                &nbsp;&nbsp;<span style="color:#E53333;">undefined</span>: 直接请求ajax数据，不缓存请求到的数据；
+                            </div>
+                        </div>
+                        <p>
+                            <span style="line-height:1.5;">&nbsp; options.offlineDataPath:自定义离线数据文件存储目录</span> 
+                        </p>
+                        <div class="tx-l size12 uinnp4">
+                            <p>
+                                <span style="line-height:1.5;">&nbsp; options.expires:离线缓存过期时间，支持类型：</span> 
+                            </p>
+                            <p>
+                                &nbsp; &nbsp; <span style="color:#E53333;">1.number类型</span>（单位：毫秒），缓存过期时长，
+                            </p>
+&nbsp; &nbsp; <span style="color:#E53333;">2.W3c IOS 8601 DateTime格式</span>,详见http://www.w3.org/TR/NOTE-datetime ，缓存过期时间点
+                            <p>
+                                <br />
+                            </p>
+                        </div>
+                        <div class="familyc colorb size16 fon-w padding20">
+                            例如:
+                        </div>
+<pre class="prettyprint linenums">appcan.ajax({
+url : 'http://weixin.appcan.cn:8086/test/get',
+type : 'GET',
+data : {
+a : 'hello word',
+b : 'page'
+},
+offline : true,
+offlineDataPath : 'wgt://aaa/',
+success : function(data) {
+alert(data);
+},
+error : function(e) {
+alert(e);
+}
+});
+</pre>
+                        <div class="familyc colorb size16 fon-w padding20">
+                            例如:
+                        </div>
+<pre class="prettyprint linenums">A.number格式
+appcan.ajax({
+url : 'http://weixin.appcan.cn:8086/test/get',
+type : 'GET',
+data : {
+a : 'hello word',
+b : 'page'
+},
+offline : true,
+expires:3000
+success : function(data) {
+alert(data);
+},
+error : function(e) {
+alert(e);
+}
+});
+B.ISO 8601格式
+appcan.request.ajax({
+url : 'http://weixin.appcan.cn:8086/test/get',
+type : 'GET',
+data : {
+a : 'hello word',
+b : 'page'
+},
+offline : true,
+expires:'2015-05-16 ',
+success : function(data) {
+alert(data);
+},
+error : function(e) {
+alert(e);
+}
+});
+</pre>
+<!--详情结束-->
+                        <div class="familyc colorb size16 fon-w padding20">
+                            例如:
+                        </div>
+<pre class="prettyprint linenums">appcan.request.ajax({ 
+    url:http://115.29.138.150:8086/test/get,
+    type:"GET",
+    data:{},
+    datatype:"json", 
+    timeout:30000,
+    success:function(data,status,requestCode,response,xhr){
+        alert("status:"+status);
+        alert("result:"+data);
+        alert("requestCode:"+requestCode);
+        alert("response:"+JSON.stringify(response));
+        alert("xhr:"+JSON.stringify(xhr));
+    },
+    error:function(xhr,erroType,error,msg){
+   alert("xhr:"+JSON.stringify(xhr));
+        alert("erroType:"+erroType);
+        alert("error:"+error); 
+        alert("msg:"+msg);
+    }
+    
+});
+
+//获取appcan.cn页面  
+appcan.request.ajax({
+  type: 'GET',
+  url: 'http://appcan.cn',
+  //添加参数
+  data: { name: 'appcan' },
+  //期望的返回类型
+  dataType: 'html',
+  timeout: 300,//超时时间
+  success: function(data){
+      //获取内容
+      alert('data');
+  },
+  error: function(xhr, type){
+    alert('Ajax error!')
+  },
+offline : true
+})
+
+//另外一种使用方式
+var request = appcan.require('request');
+request.ajax({
+  type: 'POST',
+  url: 'http://appcan.cn/reg',
+  data: { name: 'appcan' },
+  contentType: 'application/json',
+  success:function(){
+
+
+  }
+
+})
+
+//获取appcan.cn页面  
+appcan.request.ajax({
+  type: 'GET',
+  url: 'http://appcan.cn',
+  //添加参数
+  data: { name: 'appcan' },
+  //期望的返回类型
+  dataType: 'html',
+  timeout: 300,//超时时间
+  success: function(data){
+      //获取内容
+      alert('data');
+  },
+  error: function(xhr, type){
+    alert('Ajax error!')
+  }
+})
+
+//例如发送一个post请求,地址为模拟用
+request.ajax({
+  type: 'POST',
+  url: 'http://appcan.cn/reg',
+  data: { name: 'appcan' },
+  contentType: 'application/json',
+  success:function(){
+
+
+  }
+
+})
+
+</pre>
+<!--示例代码结束--> <br />
+<!--方法详情--> <a name="record"></a> 
+                        <div class="fon-w size16 colory">
+                            appcan.request.get(url,[data],success,[dataType])
+                        </div>
+                        <div class="padding5 size14">
+                            &nbsp;&nbsp;发一个http Get请求，这是appcan.request.ajax的简写
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;url:要请求的地址
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;data:该参数不是必须的，要传递的参数
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;success:成功后的回调函数，参考appcan.request.ajax参数中的success
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;dataType:返回的响应结果的数据类型
+                        </div>
+                    </div>
+                    <div class="familyc colorb size16 fon-w padding20">
+                        例如:
+                    </div>
+<pre class="prettyprint linenums">//请求appcan.cn页面的内容
+appcan.request.get('http://appcan.cn',function(data, status, xhr){
+    //数据内容
+    console.log(data);
+});
+//另外一种使用方式
+var request = appcan.require('request');
+request.get('http://appcan.cn',function(data, status, xhr){
+    //数据内容
+    console.log(data);
+});
+
+</pre>
+<!--详情结束--> <br />
+<a name="cbRecord"></a> 
+                    <div class="fon-w size16 colory">
+                        appcan.request.post(url, [data], success,[dataType])
+                    </div>
+                    <div class="padding5 size14">
+                        &nbsp;&nbsp;发起一个http Post请求
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;url:要请求的地址
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;data:要发出的请求的参数
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;success:请求的成功的回调
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;dataType:返回的响应结果的数据类型
+                        </div>
+                    </div>
+                    <div class="familyc colorb size16 fon-w padding20">
+                        例如:
+                    </div>
+<pre class="prettyprint linenums">//发送一个简单的post数据到appcan.cn
+appcan.request.post('http://appcan.cn',{name:'appcan'},function(data, status, xhr){
+    //打印结果
+    console.log(data);
+});
+//另外一种使用方式
+var request = appcan.require('request');
+request.post('http://appcan.cn',{name:'appcan'},function(data, status, xhr){
+    //打印结果
+    console.log(data);
+});
+
+</pre>
+<br />
+<a name="cbRecord"></a> 
+                    <div class="fon-w size16 colory">
+                        appcan.request.getJSON(url,[data],success)
+                    </div>
+                    <div class="padding5 size14">
+                        &nbsp;&nbsp;发起一个http get请求来获取json数据 <br />
+<br />
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;url:要获取的json数据的地址
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;data:要发送请求的参数
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;success:成功后的回调
+                        </div>
+                    </div>
+                    <div class="familyc colorb size16 fon-w padding20">
+                        例如:
+                    </div>
+<pre class="prettyprint linenums">//获取一个json数据
+appcan.request.getJSON('http://appcan.cn/a.json',function(data){
+    //打印json数据
+    console.log(data);
+});
+//另一种使用方式
+var request = appcan.require('request');
+request.getJSON('http://appcan.cn/a.json',function(data){
+    //打印json数据
+    console.log(data);
+});
+
+</pre>
+<br />
+<a name="cbRecord"></a> 
+                    <div class="fon-w size16 colory">
+                        appcan.request.postForm(selector,success,error)
+                    </div>
+                    <div class="padding5 size14">
+                        &nbsp;&nbsp;序列化表单内容并提交表单 <br />
+<br />
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;selector:表单的css选择器，或者是form元素
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;success(data):表单提交成功后的回调,data服务器端的返回值
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;error(err):表单提交失败的时候的回调,err错误对象
+                        </div>
+                    </div>
+                    <div class="familyc colorb size16 fon-w padding20">
+                        例如:
+                    </div>
+<pre class="prettyprint linenums">//获取一个json数据
+$('form').on('submit',function(){
+    var form = $('from');
+    appcan.request.postForm(form);
+    return false;
+});
+//另一种使用方式
+var request = appcan.require('request');
+$('form').on('submit',function(){
+    var form = $('from');
+    request.postForm(form);
+    return false;
+});
+</pre>
+<a name="cbRecord"></a> 
+                    <div class="fon-w size16 colory">
+                        appcan.request.clearOffline(url,callback)
+                    </div>
+                    <div class="padding5 size14">
+                        <br />
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;url:需要清除离线数据的url
+                        </div>
+                    </div>
+                    <div class="tx-l size12 uinnp4">
+                        <div>
+                            &nbsp;&nbsp;callback(err,data,dataType,optId) : 执行成功后的回调函数
+                        </div>
+                    </div>
+                    <div class="familyc colorb size16 fon-w padding20">
+                        例如:
+                    </div>
+<pre class="prettyprint linenums">//清除指定url的离线缓存数据
+appcan.request.clearOffline({
+    url :'http://weixin.appcan.cn:8086/test/get',
+    callback:function(err,data,dataType,optId){
+        if(err){
+            //清除缓存错误
+            return;
+        }
+        if(data == 0){
+            //清除缓存成功
+        }else{
+            //清除缓存失败
+        }
+    }
+});
+</pre>
+<pre class="prettyprint linenums"> </pre>
+                    <div style="display:none;">
+<script src="http://s96.cnzz.com/stat.php?id=3774146&web_id=3774146" language="JavaScript"></script>
+                    </div>
+                    <p>
+                        <br />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
