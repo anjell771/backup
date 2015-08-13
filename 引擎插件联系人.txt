@@ -1,0 +1,35 @@
+dear all：
+                
+                以下为公司引擎、插件版本的下载地址及对接同事信息，请各位知晓。
+
+                【引擎】------负责人：李广桥（武汉）  QQ：181902587  手机：18058436539
+                 1、引擎源代码
+                      https://github.com/AppCanOpenSource/appcan-android 
+                      https://github.com/AppCanOpenSource/appcan-ios 
+
+                 2、引擎下载地址：
+                      https://github.com/AppCanOpenSource/appcan-release-android/tree/master/%E5%BA%94%E7%94%A8%E5%BC%95%E6%93%8E 
+                      https://github.com/AppCanOpenSource/appcan-release-ios/tree/master/%E5%BA%94%E7%94%A8%E5%BC%95%E6%93%8E 
+                
+
+               【插件--大众版】------负责人：李广桥（武汉）  QQ：181902587  手机：18058436539
+                1、所有大众版插件的文档和CASE
+                      https://github.com/AppCanOpenSource/appcan-docs 
+
+                2、所有发布的大众版插件包版本
+                      https://github.com/AppCanOpenSource/appcan-release-ios 
+                      https://github.com/AppCanOpenSource/appcan-release-android 
+
+                3、所有大众版插件源代码
+                       https://github.com/android-plugin 
+                      https://github.com/ios-plugin 
+
+
+                【插件--企业版】------负责人：ios-旭日干（北京）  QQ：120124100  手机：18612699299
+                                                                  android-张一鹏（北京）  QQ：357184604  手机：15313626106
+
+                  由于企业级插件版本目前都在公司内网的svn下，外地同事无法访问，如有版本问题请直接和旭日干、张一鹏联系，
+                  目前，如果同事周末有插件版本问题，也请旭日干和一鹏尽可能的在家远程自己电脑，协助支持下项目上的问题。
+
+                  如果公司项目上有引擎或大众版插件问题，请由张一鹏、旭日干优先解决，在github上拉取分支修改插件的代码、文档及case，
+                  测试通过后通知广桥合并分支，由广桥出包并线上更新发布。
